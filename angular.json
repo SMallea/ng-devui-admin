@@ -81,6 +81,12 @@
             "browserTarget": "devui-admin:build"
           }
         },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "configPath": "./jest.config.js"
+          }        
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
