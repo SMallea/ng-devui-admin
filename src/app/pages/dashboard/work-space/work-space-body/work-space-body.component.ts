@@ -100,7 +100,7 @@ export class WorkSpaceBodyComponent implements OnInit, AfterViewInit, OnDestroy 
           tableOptions: this.riskWorkColunm,
         };
       default:
-        return;
+        return undefined;
     }
   }
 
