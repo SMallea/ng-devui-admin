@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { WorkGroup } from 'src/app/@core/data/work-group';
-import { WorkItem } from 'src/app/@core/data/workItem';
-import { WorkGroupService } from 'src/app/@core/mock/work-group.service';
-import { WorkItemService } from 'src/app/@core/mock/work-item.service';
+import { WorkGroup } from '../../../../@core/data/work-group';
+import { WorkItem } from '../../../../@core/data/workItem';
+import { WorkGroupService } from '../../../../@core/mock/work-group.service';
+import { WorkItemService } from '../../../../@core/mock/work-item.service';
 
 @Component({
   selector: 'da-work-space-body',

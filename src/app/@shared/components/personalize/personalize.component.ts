@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PersonalizeService, ThemeConfig } from 'src/app/@core/services/personalize.service';
+import { PersonalizeService, ThemeConfig } from '../../../@core/services/personalize.service';
 import { ThemeType } from '../../models/theme';
 
 @Component({
