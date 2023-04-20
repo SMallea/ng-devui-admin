@@ -9,6 +9,9 @@ import { OverlayContainerRef } from "ng-devui/overlay-container";
 import { CustomThemeService } from "../@core/services/custom-theme.service";
 import { of } from "rxjs";
 import { SideMenuComponent } from "../@shared/components/side-menu/side-menu.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { SideSettingsComponent } from "../@shared/components/side-settings/side-settings.component";
+import { PersonalizeComponent } from "../@shared/components/personalize/personalize.component";
 
 describe('PageComponent', () => {
   let component: PagesComponent;
@@ -28,19 +31,34 @@ describe('PageComponent', () => {
     getUiTheme: () => of('light'),
     initTheme: jest.fn(),
     updateMenu: jest.fn().mockImplementation(() => {
-      component.menu = {theme: 'aaa'}; // set the menu property here
-      console.log('updateMenu() called with menu:', component.menu);
-    })
+      component.menu = {theme: 'light'}; // set the menu property here
+    }),
+    defaultCustom: {
+      brand: 'default',
+      isDark: false
+    }
   };
+  const drawerServiceMock = {
+    open: jest.fn()
+  };
+  const dialogServiceMock = {
+    open: jest.fn(),
+  };
+  
+  
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [PagesComponent],
-      imports: [TranslateModule.forRoot()],
+      declarations: [PagesComponent, PersonalizeComponent],
+      imports: [TranslateModule.forRoot(), BrowserAnimationsModule],
       providers: [
         { provide: PersonalizeService, useValue: personalizeServiceMock },
-        DaLayoutService,CustomThemeService,
-        DrawerService,OverlayContainerRef,DocumentRef, DialogService
+        { provide: DrawerService, useValue: drawerServiceMock },
+        { provide: DialogService, useValue: dialogServiceMock },
+        DaLayoutService,
+        CustomThemeService,
+        OverlayContainerRef,
+        DocumentRef
       ],
     }).compileComponents();
 
@@ -67,14 +85,54 @@ describe('PageComponent', () => {
     }, 1000); // 1 second delay
   });
 
-  // it('should open side menu drawer', () => {
-  //   component.openSideMenuDrawer();
-  //   expect(drawerService.open).toHaveBeenCalledWith({
-  //     drawerContentComponent: SideMenuComponent,
-  //     width: '240px',
-  //     position: 'left',
-  //     data: { data: component.menu }
-  //   });
-  // });
+  it('should open side menu drawer', () => {
+    component.openSideMenuDrawer();
+    expect(drawerService.open).toHaveBeenCalledWith({
+      drawerContentComponent: SideMenuComponent,
+      width: '240px',
+      position: 'left',
+      data: { data: component.menu }
+    });
+  });
+
+  it('should open setting drawer', () => {
+    component.openSettingDrawer();
+    expect(drawerService.open).toHaveBeenCalledWith({
+      drawerContentComponent: SideSettingsComponent,
+      width: '350px',
+      destroyOnHide: false,
+      data: { close: expect.any(Function) }
+    });
+  });
+
+  it('should open personalize dialog', () => {
+    component.personalizeConfig();
+    expect(dialogService.open).toHaveBeenCalledWith({
+      id: 'theme',
+      width: '800px',
+      maxHeight: '800px',
+      title: '',
+      content: PersonalizeComponent,
+      backdropCloseable: true,
+      draggable: false,
+      onClose: expect.any(Function),
+      buttons: []
+    });
+  });
+
+  it('should update layoutConfig for sidebar shrink', () => {
+    component.sidebarShrink(true);
+    expect(component.layoutConfig.sidebar.shrink).toBe(true);
+    expect(component.layoutConfig.sidebar.firSidebar.width).toBe(54);
+    component.sidebarShrink(false);
+    expect(component.layoutConfig.sidebar.shrink).toBe(false);
+    expect(component.layoutConfig.sidebar.firSidebar.width).toBe(240);
+  });
   
+  it('should update layoutConfig for sidebar fold', () => {
+    component.sidebarFold(true);
+    expect(component.layoutConfig.sidebar.firSidebar.hidden).toBe(true);
+    component.sidebarFold(false);
+    expect(component.layoutConfig.sidebar.firSidebar.hidden).toBe(false);
+  });
 });
