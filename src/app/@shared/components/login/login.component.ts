@@ -6,10 +6,10 @@ import { FormLayout } from 'ng-devui';
 import { I18nService } from 'ng-devui/i18n';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { AuthService } from 'src/app/@core/services/auth.service';
-import { PersonalizeService } from 'src/app/@core/services/personalize.service';
-import { LANGUAGES } from 'src/config/language-config';
-import { environment } from 'src/environments/environment';
+import { AuthService } from '../../../@core/services/auth.service';
+import { PersonalizeService } from '../../../@core/services/personalize.service';
+import { LANGUAGES } from '../../../../config/language-config';
+import { environment } from '../../../../environments/environment';
 import { ThemeType } from '../../models/theme';
 
 @Component({

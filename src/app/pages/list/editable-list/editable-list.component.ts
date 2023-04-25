@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService, EditableTip, FormLayout, TableWidthConfig } from 'ng-devui';
 import { Subscription } from 'rxjs';
-import { Item } from 'src/app/@core/data/listData';
-import { ListDataService } from 'src/app/@core/mock/list-data.service';
-import { FormConfig } from 'src/app/@shared/components/admin-form';
+import { Item } from '../../../@core/data/listData';
+import { ListDataService } from '../../../@core/mock/list-data.service';
+import { FormConfig } from '../../../@shared/components/admin-form';
 
 @Component({
   selector: 'da-editable-list',
@@ -148,14 +148,16 @@ export class EditableListComponent implements OnInit {
   }
 
   getList() {
-    this.busy = this.listDataService.getListData(this.pager).subscribe((res) => {
-      const data = JSON.parse(JSON.stringify(res.pageList));
-      data.$expandConfig = { expand: false };
-      this.listData = data;
-      this.pager.total = res.total;
-    });
+    const observable = this.listDataService.getListData(this.pager);
+    if(observable){
+      this.busy = observable.subscribe((res) => {
+        const data = JSON.parse(JSON.stringify(res.pageList));
+        data.$expandConfig = { expand: false };
+        this.listData = data;
+        this.pager.total = res.total;
+      });
+    }
   }
-
   beforeEditStart = (rowItem: any, field: any) => {
     return true;
   };

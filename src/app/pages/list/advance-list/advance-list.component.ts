@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableComponent, DialogService, EditableTip, FilterConfig, TableWidthConfig } from 'ng-devui';
 import { Subscription } from 'rxjs';
-import { Item } from 'src/app/@core/data/listData';
-import { ListDataService } from 'src/app/@core/mock/list-data.service';
+import { Item } from '../../../@core/data/listData';
+import { ListDataService } from '../../../@core/mock/list-data.service';
 
 @Component({
   selector: 'da-advance-list',
@@ -155,16 +155,19 @@ export class AdvanceListComponent implements OnInit {
   }
 
   getList(loadMore = false) {
-    this.busy = this.listDataService.getOriginSource(this.pager).subscribe((res) => {
-      const data = JSON.parse(JSON.stringify(res.pageList));
-      this.pager.total = res.total;
-      this.originData = loadMore ? this.originData.concat(data) : data;
-      this.basicDataSource = this.originData.filter((i: Item | unknown) => {
-        return (i as Item).title!.toUpperCase().includes(this.searchForm.keyword.toUpperCase());
+    const observer = this.listDataService.getOriginSource(this.pager);
+    if(observer){
+      this.busy = observer.subscribe((res) => {
+        const data = JSON.parse(JSON.stringify(res.pageList));
+        this.pager.total = res.total;
+        this.originData = loadMore ? this.originData.concat(data) : data;
+        this.basicDataSource = this.originData.filter((i: Item | unknown) => {
+          return (i as Item).title!.toUpperCase().includes(this.searchForm.keyword.toUpperCase());
+        });
       });
-    });
+    } 
   }
-
+  
   onResize({ width }: { width: string }, field: string) {
     const index = this.tableWidthConfig.findIndex((config) => {
       return config.field === field;

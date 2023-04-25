@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { CheckableRelation, DataTableComponent, TableWidthConfig } from 'ng-devui/data-table';
 import { Subscription } from 'rxjs';
-import { Item } from 'src/app/@core/data/listData';
-import { ListDataService } from 'src/app/@core/mock/list-data.service';
+import { Item } from '../../../@core/data/listData';
+import { ListDataService } from '../../../@core/mock/list-data.service';
 
 @Component({
   selector: 'da-tree-list',
@@ -143,14 +143,17 @@ export class TreeListComponent implements OnInit {
   }
 
   getList() {
-    this.busy = this.listDataService.getTreeSource(this.pager).subscribe((res) => {
-      const data = JSON.parse(JSON.stringify(res.pageList));
-      this.basicDataSource = data.filter((i: any) => {
-        return i.title.toUpperCase().includes(this.keyword.toUpperCase());
+    const observer = this.listDataService.getTreeSource(this.pager); 
+    if(observer){
+      this.busy = observer.subscribe((res) => {
+        const data = JSON.parse(JSON.stringify(res.pageList));
+        this.basicDataSource = data.filter((i: any) => {
+          return i.title.toUpperCase().includes(this.keyword.toUpperCase());
+        });
+        this.pager.total = res.total;
+        this.basicDataSource[0].$isChildTableOpen = true;
       });
-      this.pager.total = res.total;
-      this.basicDataSource[0].$isChildTableOpen = true;
-    });
+    }
   }
 
   onPageChange(e: number) {
