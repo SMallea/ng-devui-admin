@@ -71,7 +71,7 @@ export class DaScreenMediaQueryService implements OnDestroy {
         return DaBreakpoints[i] as DaBreakpoint;
       }
     }
-    return;
+    return undefined;
   }
 
   ngOnDestroy(): void {

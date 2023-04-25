@@ -192,7 +192,7 @@ export class PersonalizeService {
     const themeService = (window as { [key: string]: any })['devuiThemeService'];
     this.setUiTheme();
     if (!(themeService && themeService.eventBus)) {
-      return;
+      return undefined;
     }
     const themeChangedFunc = () => {
       this.setUiTheme();
@@ -200,6 +200,7 @@ export class PersonalizeService {
     themeService.eventBus.add('themeChanged', themeChangedFunc);
     return this._themeChange.asObservable();
   }
+
 
   setRefTheme(themeId: string) {
     const devuiThemes = Object.values((window as { [key: string]: any })['devuiThemes']);

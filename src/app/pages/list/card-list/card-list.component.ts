@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Card } from 'src/app/@core/data/listData';
-import { ListDataService } from 'src/app/@core/mock/list-data.service';
+import { Card } from '../../../@core/data/listData';
+import { ListDataService } from '../../../@core/mock/list-data.service';
 
 @Component({
   selector: 'da-card-list',
@@ -43,12 +43,15 @@ export class CardListComponent implements OnInit {
   }
 
   getList() {
-    this.busy = this.listDataService.getCardSource(this.pager).subscribe((res) => {
-      this.pager.total = res.total;
-      this.cardList = res.pageList.filter((i: Card) => {
-        return i.name!.toUpperCase().includes(this.keyword?.toUpperCase());
+    const observable = this.listDataService.getCardSource(this.pager);
+    if (observable) {
+      this.busy = observable.subscribe((res) => {
+        this.pager.total = res.total;
+        this.cardList = res.pageList.filter((i: Card) => {
+          return i.name!.toUpperCase().includes(this.keyword?.toUpperCase());
+        });
       });
-    });
+    }
   }
 
   onPageChange(e: number) {
