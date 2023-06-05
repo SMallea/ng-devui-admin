@@ -56,6 +56,7 @@
             <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'Owner of each project.'">Owner</d-form-label>
             <d-form-control>
               <d-select
+                selector="projectOwner"
                 [options]="OwnerOptions"
                 [(ngModel)]="projectFormData.projectOwner"
                 [multiple]="true"
@@ -75,6 +76,7 @@
             <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'Executor of each project.'">Executor</d-form-label>
             <d-form-control>
               <d-select
+                selector="projectExecutor"
                 [options]="ExecutorOptions"
                 [(ngModel)]="projectFormData.projectExecutor"
                 [name]="'projectExecutor'"
@@ -135,7 +137,7 @@
           <d-form-item [dHasFeedback]="true">
             <d-form-label [required]="true" [hasHelp]="true" [helpTips]="'whether project is disclosure.'">Disclosure</d-form-label>
             <d-form-control>
-              <d-radio-group [name]="'city'" [values]="securityValue" [cssStyle]="'row'" [(ngModel)]="projectFormData.projectSecurity">
+              <d-radio-group selector="radio-button" [name]="'city'" [values]="securityValue" [cssStyle]="'row'" [(ngModel)]="projectFormData.projectSecurity">
               </d-radio-group>
             </d-form-control>
           </d-form-item>
@@ -144,6 +146,7 @@
             <d-form-label [required]="true">Execution Time</d-form-label>
             <d-form-control>
               <d-checkbox-group
+                selector="checkboxes"
                 [options]="checkboxOptions"
                 [(ngModel)]="projectFormData.projectExerciseDate"
                 [name]="'projectExerciseDate'"
